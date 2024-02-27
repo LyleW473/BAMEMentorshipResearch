@@ -1,7 +1,8 @@
 import openai
 from os import getenv
 
-def main(query: str):
+def main():
+    # Initialise API
     API_TYPE = getenv("API_TYPE")
     ENDPOINT = getenv("ENDPOINT")
     API_VERSION = getenv("API_VERSION")
@@ -13,8 +14,8 @@ def main(query: str):
     openai.api_key = API_KEY
 
     # Read question
-    with open("question1.txt") as q_file:
-        contents = q_file.readlines()
+    with open("prob1.txt") as p_file:
+        contents = p_file.readlines()
         print(contents)
 
     # Construct permutations of question
@@ -37,29 +38,40 @@ def main(query: str):
             subquestions_used = set()
             )
     queries = queries[1:] # Remove the first question (as it contains no relevant information)
-    for query in queries:
-        print(query)
+    # for query in queries:
+    #     print(query)
 
-    message_text = [{
-                    "role": "system",
-                    "content": "You are an AI assistant that helps people find information."
-                    },
-                    {
-                    "role": "user",
-                    "content": query
-                    }]
+    # Generate answers to queries
+    answers = []
+    print("start")
+    for i, query in enumerate(queries):
+        print(i, query)
+        message_text = [{
+                        "role": "system",
+                        "content": "You are an AI assistant that helps people find information."
+                        },
+                        {
+                        "role": "user",
+                        "content": query
+                        }]
+        
+        completion = openai.chat.completions.create(
+                                                    model = "gpt-4",
+                                                    messages = message_text,
+                                                    temperature = 0.7,
+                                                    max_tokens = 800,
+                                                    top_p = 0.95,
+                                                    frequency_penalty = 0,
+                                                    presence_penalty = 0,
+                                                    stop = None,
+                                                    )
+        answers.append(completion.choices[0].message.content)
+        print(answers[i])
     
-    completion = openai.chat.completions.create(
-                                                model = "gpt-4",
-                                                messages = message_text,
-                                                temperature = 0.7,
-                                                max_tokens = 800,
-                                                top_p = 0.95,
-                                                frequency_penalty = 0,
-                                                presence_penalty = 0,
-                                                stop = None,
-                                                )
-    print(completion.choices[0].message.content)
+    print("end")
+
+    for answer in answers:
+        print(answer)
 
 if __name__ == "__main__":
-    main("What is 5 factorial (5!)?")
+    main()
