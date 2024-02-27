@@ -20,22 +20,23 @@ def main():
 
     # Construct permutations of question
     queries = []
-    def recurse(current_i, current_query, subquestions_used):
+    all_answers_idxs = []
+    def recurse(current_i, current_query, subquestions_used_idxs):
         for i in range(current_i, len(contents)):
-            if contents[i] not in subquestions_used:
-                subquestions_used.add(contents[i])
+            if i not in subquestions_used_idxs:
+                subquestions_used_idxs.add(i)
+                all_answers_idxs.append([idx for idx in subquestions_used_idxs])
                 queries.append(current_query)
                 recurse(
                         current_i = current_i + 1, 
                         current_query = current_query + contents[i],
-                        subquestions_used = subquestions_used
+                        subquestions_used_idxs = subquestions_used_idxs
                         )
-                subquestions_used.remove(contents[i])
-
+                subquestions_used_idxs.remove(i)
     recurse(
             current_i = 1, 
             current_query = contents[0],
-            subquestions_used = set()
+            subquestions_used_idxs = set()
             )
     queries = queries[1:] # Remove the first question (as it contains no relevant information)
     # for query in queries:
@@ -44,8 +45,8 @@ def main():
     # Generate answers to queries
     answers = []
     print("start")
-    for i, query in enumerate(queries):
-        print(i, query)
+    for i, (query, idxs_used) in enumerate(zip(queries, all_answers_idxs)):
+        print(i, query, idxs_used)
         message_text = [{
                         "role": "system",
                         "content": "You are an AI assistant that helps people find information."
