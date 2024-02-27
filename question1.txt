@@ -1,0 +1,7 @@
+How many ways are there to choose a bag of 6 donuts from 8 varieties:
+(a) if there are no two donuts in the bag of the same variety?
+(b) if all donuts in the bag are of the same variety?
+(c) if there are no restrictions on the contents of the bag?
+(d) if there must be at least two varieties in the bag?
+(e) if there must be at least three blueberry-filled donuts in the bag?
+(f) if there can be no more than two blueberry-filled donuts in the bag?
