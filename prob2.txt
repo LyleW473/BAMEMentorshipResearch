@@ -1,0 +1,3 @@
+A drawer contains 12 brown socks and 12 black socks, all unmatched. A man takes socks out at random in the dark.
+(a) How many socks must he take out to be sure that he has at least two socks of the same colour?
+(b) How many socks must he take out to be sure that he has at least two black socks?
