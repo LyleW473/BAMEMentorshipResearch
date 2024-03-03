@@ -16,12 +16,13 @@ def create_prediction_mappings(prob_number):
             return
 
     # Read question
-    with open("prob1.txt") as p_file:
+    with open(f"problems/prob{prob_number}.txt") as p_file:
         contents = p_file.readlines()
         # print(contents)
 
     # Get queries based on the indexes and contents of the question
-    idxs = [1, 2, 3, 4, 5, 6]
+    idxs = [i for i in range(1, len(contents))]
+    print(idxs)
     queries, indexes_used = create_queries(idxs = idxs, contents = contents)
     print(len(queries))
     for query in queries:
@@ -60,5 +61,5 @@ def create_prediction_mappings(prob_number):
         mappings[indexes_string] = answer
         
         # Save results
-        with open("results/prob1_predictions.json", "w") as file:
+        with open(f"results/prob{prob_number}_predictions.json", "w") as file:
             json.dump(mappings, file)
