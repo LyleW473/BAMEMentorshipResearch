@@ -16,7 +16,7 @@ def main():
     openai.api_key = API_KEY
 
     # Create prediction mappings for the problem number
-    for problem_number in range(1, len(listdir("problems")) + 1):
+    for problem_number in range(1, len(listdir("problems/problems")) + 1):
         create_prediction_mappings(prob_number = problem_number)
 
 
