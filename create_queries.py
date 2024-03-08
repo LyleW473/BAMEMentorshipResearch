@@ -11,7 +11,9 @@ def create_queries(idxs, contents):
     print(f"Num permutations: {len(flattened_permutations)}")
 
     # Create queries
-    queries = [contents[0] + ("".join(contents[idx] for idx in flattened_permutations[i])) for i in range(len(flattened_permutations))]
+    answer_guidance_text = "\n\nPlease leave your response in the following format (json format), where the keys are the sub-question number and corresponding value is your answer. An example for a question with subquestions 1, 2, and 3 is as follows: {1: 16, 2: 6, 3: 25}, where '16', '6' and '25' represent your answers to each sub-question. Do not explain your answers. Your answers should be in numerical format, with no text. Responses that do not adhere to these rules will be marked as incorrect.\n"
+    print(answer_guidance_text)
+    queries = [contents[0] + ("".join(contents[idx] for idx in flattened_permutations[i])) + answer_guidance_text for i in range(len(flattened_permutations))]
 
     # Return queries and indexes used
     return queries, flattened_permutations

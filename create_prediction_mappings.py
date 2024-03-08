@@ -16,7 +16,7 @@ def create_prediction_mappings(prob_number):
             return
 
     # Read question
-    with open(f"problems/prob{prob_number}.txt") as p_file:
+    with open(f"problems/problems/prob{prob_number}.txt") as p_file:
         contents = p_file.readlines()
         # print(contents)
 

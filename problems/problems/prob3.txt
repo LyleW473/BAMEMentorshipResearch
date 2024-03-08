@@ -1,4 +1,4 @@
 A multiple choice test contains ten questions. There are four possible answers for each question.
-(a) How many ways can a student solve the test if the student chooses exactly one answer for each question?
-(b) How many ways can a student solve the test if the student chooses at most one answer for each question (that is, the student can leave some answers blank)?
-(c) How many ways can a student solve the test if the student is allowed to choose at most two answers for each question (that is, either 0 or 1 or 2 answers)?
+(1) How many ways can a student solve the test if the student chooses exactly one answer for each question?
+(2) How many ways can a student solve the test if the student chooses at most one answer for each question (that is, the student can leave some answers blank)?
+(3) How many ways can a student solve the test if the student is allowed to choose at most two answers for each question (that is, either 0 or 1 or 2 answers)?

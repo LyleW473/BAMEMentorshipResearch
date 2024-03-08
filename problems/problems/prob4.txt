@@ -1,3 +1,3 @@
 Answer the following.
-(a) How many ways are there to assign three jobs to five employees, if every job is assigned to just one employee, but there is no restriction on the number of jobs (even none) that can be given to a single employee?
-(b) How many ways are there to assign six jobs to five employees, if every job is assigned to just one employee, and at least one job should be given to each employee?
+(1) How many ways are there to assign three jobs to five employees, if every job is assigned to just one employee, but there is no restriction on the number of jobs (even none) that can be given to a single employee?
+(2) How many ways are there to assign six jobs to five employees, if every job is assigned to just one employee, and at least one job should be given to each employee?
