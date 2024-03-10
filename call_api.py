@@ -18,8 +18,7 @@ def main():
     # Create prediction mappings for the problem number
     for problem_number in range(1, len(listdir("problems/problems")) + 1):
         create_prediction_mappings(prob_number = problem_number, make_uniform=True)
-
-        print("Making distributed")
+        print("Making distributed prediction mappings.")
         # Create predictions where the number of questions with n, n+1, n+2, ... subquestions is uniform
         create_prediction_mappings(prob_number= problem_number, make_uniform=False)
 

@@ -9,18 +9,8 @@ def create_queries(idxs, contents, make_uniform):
     # Make distribution of queries with n, n+1, n+2 and so on subquestions uniform
     if make_uniform == True:
         total_per_length = [len(sublist) for sublist in all_permutations]
-        print(total_per_length)
         lcm = math.lcm(*total_per_length)
-        print(lcm)
         all_permutations = [sublist * (lcm // len(sublist)) for sublist in all_permutations] # Repeat the list multiple times until there are lcm permutations of length n
-        print(all_permutations[1][25:35])
-        print([len(a) for a in all_permutations])
-
-        # print(math.lcm(*[length for length in total_per_length.values()]))
-        # lcm = math.lcm(*[length for length in total_per_length.values()])
-        # num_repeats = [sublist * (lcm) for sublist in all_permutations]
-        # print(total_per_length)
-        # print()
 
     # Flatten to 1D list containg all permutations of indexes
     flattened_permutations = [comb for sublist in all_permutations for comb in sorted(sublist)]
