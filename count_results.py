@@ -65,13 +65,18 @@ def count_results(prob_number):
                 num_sqs_correct += 1
 
         correct_per_length[total_subquestions] =  correct_per_length.get(total_subquestions, 0) + num_sqs_correct # Increment the number of total correctly answered subquestions at this length n
-        
+         
     
     print(total_per_length)
     print(sum(total_per_length.values()) == num_responses - num_incorrect_responses)
     total_sqs_per_length = {length: total_per_length[length] * length for length in total_per_length.keys()} # The total number of subquestions in a query with n subquestions
     print(total_sqs_per_length)
     print(correct_per_length)
+    grades_per_length = {total_questions_with_n_sqs: (num_correct / total_sqs) * 100 for num_correct, (total_questions_with_n_sqs, total_sqs) in zip(correct_per_length.values(), total_sqs_per_length.items())}
+    print(grades_per_length)
+    
+    avg_grade = sum(grades_per_length.values()) / len(grades_per_length)
+    print(avg_grade)
 
 if __name__ == "__main__":
     count_results(prob_number = 1)
