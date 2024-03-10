@@ -16,9 +16,6 @@ def clean_string(string):
                 corrected_string_chars.append(string[i])
         elif string[i].isdigit() or string[i] == ":" or string[i] == ",":
             corrected_string_chars.append(string[i])
-
-    string = "".join(char for char in corrected_string_chars)
-    print("corrected", string)
     return "".join(char for char in corrected_string_chars)
 
 def format_answers(string):
@@ -47,25 +44,34 @@ def count_results(prob_number):
 
     # Remove any irrelevant characters from the predictions and format it into a list of tuples, where the first element is the subquestion and the second is the answer
     predictions = {sub_qs: format_answers(pred) for sub_qs, pred in predictions.items()}    
-    
-    
-    grades = {}
+
+    # Count the results
+    correct_per_length = {} # Number of correctly answered subquestions at where the questions contains 1, 2, 3 and so on subquestions
+    total_per_length = {} # Number of questions with 1, 2, 3, and so on subquestions
     for permutation_string, answers in predictions.items(): 
         print(permutation_string)
         print(answers)
-        total_correct = 0
+
         total_subquestions = len(answers)
+        total_per_length[total_subquestions] = total_per_length.get(total_subquestions, 0) + 1 # Increment the number of total questions that have n subquestions
+
+        num_sqs_correct = 0
         for i, (sub_q_idx, sub_q_answer) in enumerate(answers):
             print(f"i: {i} | sub_q_idx: {sub_q_idx} | sub_q_answer: {sub_q_answer} | ground truth: {answers_indexes[sub_q_idx]}")
             if sub_q_answer != answers_indexes[sub_q_idx]:
                 print(f"Subquestion {sub_q_idx} is incorrect")
             else:
                 print(f"Subquestion {sub_q_idx} is correct")
-                total_correct += 1
+                num_sqs_correct += 1
+
+        correct_per_length[total_subquestions] =  correct_per_length.get(total_subquestions, 0) + num_sqs_correct # Increment the number of total correctly answered subquestions at this length n
         
-        # Save the "grade"
-        grades[permutation_string] = total_correct / total_subquestions
-        print(total_correct / total_subquestions)
+    
+    print(total_per_length)
+    print(sum(total_per_length.values()) == num_responses - num_incorrect_responses)
+    total_sqs_per_length = {length: total_per_length[length] * length for length in total_per_length.keys()} # The total number of subquestions in a query with n subquestions
+    print(total_sqs_per_length)
+    print(correct_per_length)
 
 if __name__ == "__main__":
     count_results(prob_number = 1)
