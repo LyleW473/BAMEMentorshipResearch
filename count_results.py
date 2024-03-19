@@ -1,5 +1,5 @@
 import json
-import re
+from os import listdir
 
 def contains_letters(string):
     return any(char.isalpha() or char == "+" or char == "-" for char in string)
@@ -105,6 +105,8 @@ def count_results(prob_number):
     avg_grade = total_correct_subqs / total_subquestions
     print(avg_grade, total_subquestions, total_correct_subqs)
 
+    return avg_grade
+
 def count_uniform_results(prob_number):
     with open(f"problems/answers/prob{prob_number}_answers.txt", "r") as answers_file:
         answers = answers_file.readlines()
@@ -151,7 +153,6 @@ def count_uniform_results(prob_number):
 
     # Format answers so that they can be counted
     predictions = [{sub_qs: format_answers(pred) for sub_qs, pred in pred_dict.items()} for pred_dict in predictions]
-    print(len(predictions), predictions[1]["1#"])
     
     # Count results
     correct_per_length = {}
@@ -192,7 +193,14 @@ def count_uniform_results(prob_number):
     total_subquestions = sum(total_sqs_per_length.values())
     avg_grade = total_correct_subqs / total_subquestions
     print(avg_grade, total_subquestions, total_correct_subqs)
+    return avg_grade
 
 if __name__ == "__main__":
-    count_results(prob_number = 1)
-    count_uniform_results(prob_number = 1)
+    averages = []
+    averages_uniform = []
+    for problem_number in range(1, len(listdir("problems/problems")) + 1):
+        averages.append(count_results(prob_number = problem_number))
+        averages_uniform.append(count_uniform_results(prob_number = problem_number))
+
+    print(f"Averages: {averages}")
+    print(f"Averages uniform: {averages_uniform}")
