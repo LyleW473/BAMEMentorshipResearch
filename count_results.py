@@ -38,8 +38,33 @@ def count_results(prob_number):
     # Filter and calculate the number of incorrect responses
     print(len(predictions))
     num_responses = len(predictions)
-    predictions = {sub_qs:pred for sub_qs, pred in predictions.items() if not contains_letters(pred)}
+    preds = {}
+    for sub_qs, pred in predictions.items():
+
+        if not contains_letters(pred):
+            preds[sub_qs] = pred
+
+        # If it does contain letters
+        else:
+            
+            if "{" in pred and "}" in pred:
+                new_pred = pred[pred.find("{"):pred.find("}")+1]
+                print(new_pred)
+                new_pred = new_pred.replace("'", "").replace('"', "").replace("\n", " ").replace(" ", "|") # | character is used as a placeholder, as it won't be present in the answers
+                print(new_pred)
+                # Replace with a single space, so that it doesn't interfere with the parsing logic in format_answers for commas between numbers
+                print(new_pred)
+                print(contains_letters(new_pred))
+                print(sub_qs)
+                if not contains_letters(new_pred):
+                    preds[sub_qs] = new_pred
+
+                # cleaned = "".join(char for char in pred if char.isdigit() or char == "," or char == ":" or char == "{" or char == "}")
+                # print(cleaned)
+                print()
+
     num_incorrect_responses = num_responses - len(predictions)
+    predictions = preds
     print(num_incorrect_responses)
 
     # Remove any irrelevant characters from the predictions and format it into a list of tuples, where the first element is the subquestion and the second is the answer
@@ -78,7 +103,7 @@ def count_results(prob_number):
     total_correct_subqs = sum(correct_per_length.values())
     total_subquestions = sum(total_sqs_per_length.values())
     avg_grade = total_correct_subqs / total_subquestions
-    print(avg_grade)
+    print(avg_grade, total_subquestions, total_correct_subqs)
 
 def count_uniform_results(prob_number):
     with open(f"problems/answers/prob{prob_number}_answers.txt", "r") as answers_file:
@@ -98,7 +123,7 @@ def count_uniform_results(prob_number):
     preds = []
     for pred_dict in predictions:
         for sub_qs, pred in pred_dict.items():
-            
+
             if not contains_letters(pred):
                 preds.append({sub_qs: pred})
 
@@ -106,7 +131,6 @@ def count_uniform_results(prob_number):
             else:
                 
                 if "{" in pred and "}" in pred:
-                    
                     new_pred = pred[pred.find("{"):pred.find("}")+1]
                     print(new_pred)
                     new_pred = new_pred.replace("'", "").replace('"', "").replace("\n", " ").replace(" ", "|") # | character is used as a placeholder, as it won't be present in the answers
@@ -170,5 +194,5 @@ def count_uniform_results(prob_number):
     print(avg_grade, total_subquestions, total_correct_subqs)
 
 if __name__ == "__main__":
-    # count_results(prob_number = 1)
+    count_results(prob_number = 1)
     count_uniform_results(prob_number = 1)
