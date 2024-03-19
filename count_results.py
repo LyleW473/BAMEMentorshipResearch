@@ -2,7 +2,7 @@ import json
 import re
 
 def contains_letters(string):
-    return any(char.isalpha() for char in string)
+    return any(char.isalpha() or char == "+" or char == "-" for char in string)
 
 def clean_string(string):   
 
@@ -48,15 +48,15 @@ def count_results(prob_number):
     # Count the results
     correct_per_length = {} # Number of correctly answered subquestions at where the questions contains 1, 2, 3 and so on subquestions
     total_per_length = {} # Number of questions with 1, 2, 3, and so on subquestions
-    for permutation_string, answers in predictions.items(): 
+    for permutation_string, ans in predictions.items(): 
         print(permutation_string)
-        print(answers)
+        print(ans)
 
-        total_subquestions = len(answers)
+        total_subquestions = len(ans)
         total_per_length[total_subquestions] = total_per_length.get(total_subquestions, 0) + 1 # Increment the number of total questions that have n subquestions
 
         num_sqs_correct = 0
-        for i, (sub_q_idx, sub_q_answer) in enumerate(answers):
+        for i, (sub_q_idx, sub_q_answer) in enumerate(ans):
             print(f"i: {i} | sub_q_idx: {sub_q_idx} | sub_q_answer: {sub_q_answer} | ground truth: {answers_indexes[sub_q_idx]}")
             if sub_q_answer != answers_indexes[sub_q_idx]:
                 print(f"Subquestion {sub_q_idx} is incorrect")
@@ -75,8 +75,78 @@ def count_results(prob_number):
     grades_per_length = {total_questions_with_n_sqs: (num_correct / total_sqs) * 100 for num_correct, (total_questions_with_n_sqs, total_sqs) in zip(correct_per_length.values(), total_sqs_per_length.items())}
     print(grades_per_length)
     
-    avg_grade = sum(grades_per_length.values()) / len(grades_per_length)
+    total_correct_subqs = sum(correct_per_length.values())
+    total_subquestions = sum(total_per_length.values())
+    avg_grade = total_correct_subqs / total_subquestions
+    print(avg_grade)
+
+def count_uniform_results(prob_number):
+    with open(f"problems/answers/prob{prob_number}_answers.txt", "r") as answers_file:
+        answers = answers_file.readlines()
+
+    answers = [answer.replace("\n", "") for answer in answers] # Clean answers
+    answers_indexes = {str(i): str(answers[i]) for i in range(1, len(answers))} # Indexes for each subquestion, skip the '#' operator
+    print(answers_indexes)
+    print(len(answers))
+
+    with open(f"results/uniform/prob{prob_number}_predictions.json", "r") as predictions_file:
+        predictions = json.load(predictions_file)
+    
+
+    # Filter and calculate the number of incorrect responses
+    num_responses = len(predictions)
+    preds = []
+    for pred_dict in predictions:
+        for sub_qs, pred in pred_dict.items():
+            if not contains_letters(pred):
+                preds.append({sub_qs: pred})
+    num_incorrect_responses = num_responses - len(preds)
+    predictions = preds
+    print(num_incorrect_responses, len(predictions))
+
+    # Format answers so that they can be counted
+    predictions = [{sub_qs: format_answers(pred) for sub_qs, pred in pred_dict.items()} for pred_dict in predictions]
+    print(len(predictions), predictions[1]["1#"])
+    
+    # Count results
+    correct_per_length = {}
+    total_per_length = {}
+    num_sub_correct = 0
+    num_sub_qs = 0
+    for pred_dict in predictions:
+        for permutation_string, ans in pred_dict.items(): 
+            print(pred_dict, permutation_string, ans)
+
+            total_subquestions = len(ans)
+            total_per_length[total_subquestions] = total_per_length.get(total_subquestions, 0) + 1 # Increment the number of total questions that have n subquestions
+
+            num_sqs_correct = 0
+            for i, (sub_q_idx, sub_q_answer) in enumerate(ans):
+                num_sub_qs += 1
+                print(f"i: {i} | sub_q_idx: {sub_q_idx} | sub_q_answer: {sub_q_answer} | ground truth: {answers_indexes[sub_q_idx]}")
+                if sub_q_answer != answers_indexes[sub_q_idx]:
+                    print(f"Subquestion {sub_q_idx} is incorrect")
+                else:
+                    print(f"Subquestion {sub_q_idx} is correct")
+                    num_sqs_correct += 1
+                    num_sub_correct += 1
+
+            correct_per_length[total_subquestions] =  correct_per_length.get(total_subquestions, 0) + num_sqs_correct # Increment the number of total correctly answered subquestions at this length n
+
+    print("total correct:", num_sub_correct, num_sub_qs)
+    print("total per length", total_per_length)
+    print(sum(total_per_length.values()) == num_responses - num_incorrect_responses)
+    total_sqs_per_length = {length: total_per_length[length] * length for length in total_per_length.keys()} # The total number of subquestions in a query with n subquestions
+    print(total_sqs_per_length)
+    print(correct_per_length)
+    grades_per_length = {total_questions_with_n_sqs: (num_correct / total_sqs) * 100 for num_correct, (total_questions_with_n_sqs, total_sqs) in zip(correct_per_length.values(), total_sqs_per_length.items())}
+    print(grades_per_length)
+    
+    total_correct_subqs = sum(correct_per_length.values())
+    total_subquestions = sum(total_per_length.values())
+    avg_grade = total_correct_subqs / total_subquestions
     print(avg_grade)
 
 if __name__ == "__main__":
-    count_results(prob_number = 1)
+    # count_results(prob_number = 1)
+    count_uniform_results(prob_number = 1)
