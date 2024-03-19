@@ -76,7 +76,7 @@ def count_results(prob_number):
     print(grades_per_length)
     
     total_correct_subqs = sum(correct_per_length.values())
-    total_subquestions = sum(total_per_length.values())
+    total_subquestions = sum(total_sqs_per_length.values())
     avg_grade = total_correct_subqs / total_subquestions
     print(avg_grade)
 
@@ -143,9 +143,9 @@ def count_uniform_results(prob_number):
     print(grades_per_length)
     
     total_correct_subqs = sum(correct_per_length.values())
-    total_subquestions = sum(total_per_length.values())
+    total_subquestions = sum(total_sqs_per_length.values())
     avg_grade = total_correct_subqs / total_subquestions
-    print(avg_grade)
+    print(avg_grade, total_subquestions, total_correct_subqs)
 
 if __name__ == "__main__":
     # count_results(prob_number = 1)
