@@ -98,8 +98,29 @@ def count_uniform_results(prob_number):
     preds = []
     for pred_dict in predictions:
         for sub_qs, pred in pred_dict.items():
+            
             if not contains_letters(pred):
                 preds.append({sub_qs: pred})
+
+            # If it does contain letters
+            else:
+                
+                if "{" in pred and "}" in pred:
+                    
+                    new_pred = pred[pred.find("{"):pred.find("}")+1]
+                    print(new_pred)
+                    new_pred = new_pred.replace("'", "").replace('"', "").replace("\n", " ").replace(" ", "|") # | character is used as a placeholder, as it won't be present in the answers
+                    print(new_pred)
+                    # Replace with a single space, so that it doesn't interfere with the parsing logic in format_answers for commas between numbers
+                    print(new_pred)
+                    print(contains_letters(new_pred))
+                    print(sub_qs)
+                    if not contains_letters(new_pred):
+                        preds.append({sub_qs: new_pred})
+
+                    # cleaned = "".join(char for char in pred if char.isdigit() or char == "," or char == ":" or char == "{" or char == "}")
+                    # print(cleaned)
+                    print()
     num_incorrect_responses = num_responses - len(preds)
     predictions = preds
     print(num_incorrect_responses, len(predictions))
@@ -121,6 +142,7 @@ def count_uniform_results(prob_number):
             total_per_length[total_subquestions] = total_per_length.get(total_subquestions, 0) + 1 # Increment the number of total questions that have n subquestions
 
             num_sqs_correct = 0
+            print(permutation_string, ans)
             for i, (sub_q_idx, sub_q_answer) in enumerate(ans):
                 num_sub_qs += 1
                 print(f"i: {i} | sub_q_idx: {sub_q_idx} | sub_q_answer: {sub_q_answer} | ground truth: {answers_indexes[sub_q_idx]}")
