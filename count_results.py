@@ -108,7 +108,7 @@ def count_results(prob_number):
     
     # Return:
     # Total questions per length, total subquestions per length, grades per length, number of incorrect responses
-    return total_per_length, total_sqs_per_length, grades_per_length, num_incorrect_responses
+    return total_per_length, total_sqs_per_length, grades_per_length, correct_per_length, num_incorrect_responses
 
 def count_uniform_results(prob_number):
     with open(f"problems/answers/prob{prob_number}_answers.txt", "r") as answers_file:
@@ -197,7 +197,7 @@ def count_uniform_results(prob_number):
     total_subquestions = sum(total_sqs_per_length.values())
     avg_grade = total_correct_subqs / total_subquestions
     # print(avg_grade, total_subquestions, total_correct_subqs)
-    return total_per_length, total_sqs_per_length, grades_per_length, num_incorrect_responses
+    return total_per_length, total_sqs_per_length, grades_per_length, correct_per_length, num_incorrect_responses
 
 if __name__ == "__main__":
     averages = []
