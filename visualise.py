@@ -34,23 +34,23 @@ if __name__ == "__main__":
         info_B = count_uniform_results(prob_number = problem_number)
         # Grades per length (non-uniform)
         total_per_length_A, total_sqs_per_length_A, grades_per_length_A, correct_per_length_A, num_incorrect_responses_A = info_A
-        # draw_bar_chart(
-        #                 data=grades_per_length_A, 
-        #                 title=f"Grades per length for Problem {problem_number}", 
-        #                 xlabel="No.of subquestions used", 
-        #                 ylabel="Grade(%)", 
-        #                 labels_per_bar=list(total_per_length_A.values())
-        #                 )
+        draw_bar_chart(
+                        data=grades_per_length_A, 
+                        title=f"Grades per length for Problem {problem_number}", 
+                        xlabel="No.of subquestions used", 
+                        ylabel="Grade(%)", 
+                        labels_per_bar=list(total_per_length_A.values())
+                        )
 
         # # Grades per length (uniform)
         total_per_length_B, total_sqs_per_length_B, grades_per_length_B, correct_per_length_B, num_incorrect_responses_B = info_B
-        # draw_bar_chart(
-        #                 data=grades_per_length_B, 
-        #                 title=f"Grades per length for Problem {problem_number} [Uniform]", 
-        #                 xlabel="No.of subquestions used", 
-        #                 ylabel="Grade(%)", 
-        #                 labels_per_bar=list(total_per_length_B.values())
-        #                 )
+        draw_bar_chart(
+                        data=grades_per_length_B, 
+                        title=f"Grades per length for Problem {problem_number} [Uniform]", 
+                        xlabel="No.of subquestions used", 
+                        ylabel="Grade(%)", 
+                        labels_per_bar=list(total_per_length_B.values())
+                        )
         # print(grades_per_length_A)
         # print(total_per_length_A)
         # print(num_incorrect_responses_A)
@@ -77,7 +77,7 @@ if __name__ == "__main__":
         print(total_subquestions, total_correctly_answered_subqs)
         draw_bar_chart(
                     data={1: total_correctly_answered_subqs, 2: sum(total_sqs_per_length_B.values())},
-                    title=f"Number of subquestions correct for Problem {problem_number}", 
+                    title=f"Number of subquestions correct for Problem {problem_number} [Uniform]", 
                     xlabel="Correct/Incorrect", 
                     ylabel="Num of subquestions", 
                     labels_per_bar=["Correct", "Incorrect"]
