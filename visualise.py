@@ -5,7 +5,7 @@ import os
 from count_results import count_results, count_uniform_results
 
 
-def draw_bar_chart(data, title, xlabel, ylabel):
+def draw_bar_chart(data, title, xlabel, ylabel, num_queries_per_bar):
     keys = data.keys()
     values = data.values()
 
@@ -19,10 +19,12 @@ def draw_bar_chart(data, title, xlabel, ylabel):
     plt.ylabel(ylabel)
 
     # Add text to each bar (representing the value)
-    for bar in bars:
+    for i, bar in enumerate(bars):
         y_val = bar.get_height()
-        plt.text(bar.get_x() + bar.get_width()/2, y_val, round(y_val, 2), va='bottom', ha='center') # Center text
-    
+        plt.text(bar.get_x() + bar.get_width()/2, y_val, round(y_val, 2), va='bottom', ha='center') # The total grade for the each bar
+        plt.text(bar.get_x() + bar.get_width()/2, y_val/2, num_queries_per_bar[i], va='center', ha='center') # Number of queries for each bar
+
+
     plt.show()
     
 
@@ -36,9 +38,21 @@ if __name__ == "__main__":
 
         # Grades per length (non-uniform)
         total_per_length, total_sqs_per_length, grades_per_length, num_incorrect_responses = info_a
-        draw_bar_chart(grades_per_length, title=f"Grades per length for Problem {problem_number}", xlabel="No.of subquestions used", ylabel="Grade(%)")
+        draw_bar_chart(
+                        data=grades_per_length, 
+                        title=f"Grades per length for Problem {problem_number}", 
+                        xlabel="No.of subquestions used", 
+                        ylabel="Grade(%)", 
+                        num_queries_per_bar=list(total_per_length.values())
+                        )
 
         # Grades per length (uniform)
         total_per_length, total_sqs_per_length, grades_per_length, num_incorrect_responses = info_b
-        draw_bar_chart(grades_per_length, title=f"Grades per length for Problem {problem_number} [Uniform]", xlabel="No.of subquestions used", ylabel="Grade(%)")
+        draw_bar_chart(
+                        data=grades_per_length, 
+                        title=f"Grades per length for Problem {problem_number} [Uniform]", 
+                        xlabel="No.of subquestions used", 
+                        ylabel="Grade(%)", 
+                        num_queries_per_bar=list(total_per_length.values())
+                        )
 
